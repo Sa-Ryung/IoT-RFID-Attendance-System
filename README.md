@@ -1,9 +1,37 @@
-An Integrated IoT-Based Smart RFID Access Control and PIR Intrusion Detection SystemAn advanced, low-cost, and scalable Internet of Things (IoT) ecosystem designed for secure room access, dynamic on-card credential management, perimeter intrusion detection, and automated real-time cloud synchronization[cite: 1].📖 Abstract & OverviewTraditional manual attendance systems and isolated security frameworks often suffer from inefficiencies, human error, and delayed response times[cite: 1]. This project integrates hardware peripherals with a NodeMCU ESP8266 microcontroller to bridge physical access control and cloud-based data analytics[cite: 1].The system features a dual-layer architecture:Smart Access Control: Utilizes an MFRC522 RFID module for contactless identity verification and complete on-card CRUD (Create, Read, Update, Delete) operations across MIFARE memory blocks[cite: 1].Perimeter Intrusion Detection: Employs a Passive Infrared (PIR) sensor to monitor unauthorized physical movement during unoccupied or armed states[cite: 1].Cloud Logging: Automatically syncs attendance entries (Student ID, Name, Class, Timestamp, and IN/OUT status) to Google Sheets via secure HTTPS requests and Google Apps Script[cite: 1].🛠️ Hardware Components & Bill of MaterialsComponentFunction / DescriptionOperating VoltagePin / ProtocolNodeMCU ESP8266Central processing unit and Wi-Fi gateway[cite: 1]3.3V / USBMaster ControllerMFRC522 RFID ScannerContactless reader for MIFARE 1K tags[cite: 1]3.3V (Strictly DO NOT use 5V)SPI (D1, D2, D5, D6, D7)[cite: 1]16x2 I2C LCD DisplayReal-time visual user feedback and prompts[cite: 1]5VI2C (D3 SDA, D4 SCL)[cite: 1]Passive Infrared (PIR)Motion-based thermal intrusion detection[cite: 1]5VDigital GPIOActive Buzzer & LEDsAcoustic tones and visual status indicators[cite: 1]5V / 3.3VDigital GPIO (D0)[cite: 1]📌 Wiring & Pin ConfigurationModulePin NameNodeMCU PinWire Color (Fritzing)Protocol / FunctionMFRC522 RFID3.3V3V3RedPower Supply[cite: 1]RSTD1GreyReset Pin (RST_PIN)[cite: 1]GNDG (GND)BlackGround[cite: 1]MISOD6OrangeSPI Master In Slave Out[cite: 1]MOSID7GreenSPI Master Out Slave In[cite: 1]SCKD5BlueSPI Serial Clock[cite: 1]SDA (SS)D2PurpleSPI Slave Select (SS_PIN)[cite: 1]16x2 I2C LCDGNDG (GND)BlackGround[cite: 1]VCCVINRed5V Power Supply from USB[cite: 1]SDAD3YellowI2C Serial Data (Wire.begin(D3, D4))[cite: 1]SCLD4BrownI2C Serial Clock[cite: 1]Active BuzzerPos (+)D0Light BlueDigital Control (BUZZER) Output[cite: 1]Neg (-)G (GND)BlackGround[cite: 1]⚙️ System Architecture & WorkflowPlaintext[ Power On / Boot ] 
-       │
-       ├─► Initialize Wi-Fi, SPI, & I2C[cite: 1]
-       │
-       └─► Idle / Ready Mode (Awaiting Serial Command: ATTEND or MGMT)[cite: 1]
-              │
-              ├─► [ATTEND Mode]: Polls RFID -> Validates UID -> Logs to Google Sheets[cite: 1]
-              └─► [MGMT Mode]: Executes On-Card CRUD (Read, Write, Update, Delete)[cite: 1]
-Operational Modes:Attendance Mode (currentMode == 1): Scans authorized cards, toggles IN/OUT status, renders welcome messages on the LCD, and dispatches HTTPS GET payloads to Google Sheets[cite: 1].Card Management Mode (currentMode == 2): Enables direct modification of MIFARE memory blocks (Blocks 4, 5, 6, 8, and 9 for ID, First Name, Last Name, Class, and Phone) via Serial commands (R, W, U, D) without reflashing code[cite: 1].Intrusion Detection: Continuously monitors ambient thermal patterns via the PIR sensor during idle states, triggering local alarms upon unauthorized motion[cite: 1].📊 Experimental Verification MatrixTest ScenarioRFID Tag StatusPIR Motion StateLCD Output MessageBuzzer AlertCloud Logging StatusCase 1: Authorized EntryRegistered Tag Swiped[cite: 1]Motion Detected[cite: 1]"Checked IN" / "Checked OUT"[cite: 1]Single Beep (100 ms)[cite: 1]Logged to Google Sheets[cite: 1]Case 2: Invalid CardUnregistered Tag Swiped[cite: 1]No Motion[cite: 1]"Unknown Card / Access Denied"[cite: 1]Triple Beep (150 ms)[cite: 1]Rejected (No Cloud Sync)[cite: 1]Case 3: Intrusion AlertNo Tag Swiped[cite: 1]Unsanctioned Motion[cite: 1]"Intrusion Alert!"[cite: 1]Continuous Alarm[cite: 1]Local Event Logged[cite: 1]Case 4: Card UpdateRegistered Tag Swiped[cite: 1]Idle[cite: 1]"Update OK!"[cite: 1]Single Beep (100 ms)[cite: 1]MIFARE Blocks Rewritten[cite: 1]Case 5: Card DeleteRegistered Tag Swiped[cite: 1]Idle[cite: 1]"Card Deleted!"[cite: 1]Single Beep (100 ms)[cite: 1]Sector Blocks Cleared[cite: 1]🚀 Future Enhancements & ScopeClass Time Tracking Subsystem: Integration of an IR obstacle detection sensor paired with a 0.96" SSD1306 OLED display and a reset push-button switch to monitor live classroom occupancy and duration patterns[cite: 1].
+IoT-Based Smart RFID Attendance and Security System
+An IoT-based project that combines RFID attendance tracking and PIR motion detection using the NodeMCU ESP8266. Attendance records can be synchronized with Google Sheets, while local alerts help identify unauthorized access or movement.
+Features
+- RFID-based user authentication
+- Student attendance tracking with IN/OUT status
+- Google Sheets cloud logging over Wi-Fi
+- PIR-based motion and intrusion alerts
+- LCD, buzzer, and LED status indicators
+- RFID card management: Read, Write, Update, and Delete
+Hardware
+- NodeMCU ESP8266
+- MFRC522 RFID reader and RFID cards
+- PIR motion sensor
+- 16×2 I2C LCD
+- Buzzer and LEDs
+- Breadboard, jumper wires, and USB power
+Technologies
+- Arduino IDE / Embedded C++
+- ESP8266 Wi-Fi
+- SPI and I2C
+- Google Apps Script
+- Google Sheets
+- Proteus 8 (for simulation)
+How It Works
+1. Scan an RFID card.
+2. The system checks whether the card is authorized.
+3. The LCD, buzzer, and LEDs show the result.
+4. Attendance details are sent to Google Sheets through Google Apps Script.
+5. The PIR sensor detects movement for intrusion monitoring.
+6. Administrators can manage RFID card data using serial commands.
+Setup
+1. Assemble the hardware using the circuit diagram in the repository.
+2. Install ESP8266 board support and the required Arduino libraries.
+3. Configure your Wi-Fi credentials and Google Apps Script endpoint in the firmware.
+4. Upload the firmware to the NodeMCU ESP8266.
+5. Test RFID authentication, attendance logging, and PIR alerts.
+Important: Keep Wi-Fi passwords and private deployment credentials out of public repositories. The MFRC522 reader must be powered at 3.3 V.
