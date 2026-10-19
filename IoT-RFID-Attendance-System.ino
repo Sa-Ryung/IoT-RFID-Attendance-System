@@ -15,8 +15,8 @@ MFRC522 mfrc522(SS_PIN, RST_PIN);
 MFRC522::MIFARE_Key key;
 
 // ---------------- WIFI ----------------
-#define WIFI_SSID     "Mahi_2.4G"
-#define WIFI_PASSWORD "Mahi_Mco71"
+#define WIFI_SSID     "12345"
+#define WIFI_PASSWORD "12345"
 
 String sheet_url = "https://script.google.com/macros/s/AKfycbwSUf35B9YvV9D3iS0rkW6VIeFVkIgNTltD2JpqDCO9nU8gFpgdpCCa6m2PxYXtyWrx2w/exec";
 
